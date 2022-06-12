@@ -13,6 +13,7 @@
 		773B78702855282B002C5263 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 773B786E2855282B002C5263 /* Main.storyboard */; };
 		773B78722855282D002C5263 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 773B78712855282D002C5263 /* Assets.xcassets */; };
 		773B78752855282D002C5263 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 773B78732855282D002C5263 /* LaunchScreen.storyboard */; };
+		77B344212855DB9600DD83D2 /* start.txt in Resources */ = {isa = PBXBuildFile; fileRef = 77B344202855DB9600DD83D2 /* start.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		773B78712855282D002C5263 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		773B78742855282D002C5263 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		773B78762855282D002C5263 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		77B344202855DB9600DD83D2 /* start.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = start.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				773B786E2855282B002C5263 /* Main.storyboard */,
 				773B78712855282D002C5263 /* Assets.xcassets */,
 				773B78732855282D002C5263 /* LaunchScreen.storyboard */,
+				77B344202855DB9600DD83D2 /* start.txt */,
 				773B78762855282D002C5263 /* Info.plist */,
 			);
 			path = "100 Days Of Swift-Project 5";
@@ -126,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				773B78752855282D002C5263 /* LaunchScreen.storyboard in Resources */,
+				77B344212855DB9600DD83D2 /* start.txt in Resources */,
 				773B78722855282D002C5263 /* Assets.xcassets in Resources */,
 				773B78702855282B002C5263 /* Main.storyboard in Resources */,
 			);
