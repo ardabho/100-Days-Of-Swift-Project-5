@@ -2,7 +2,7 @@
 100-Days-Of-Swift-Project-5
 
 A game where you derive new words from the word given in the title. <br />
-You can use the plus button to add a new word, and the refresh button to get a new word. <br />
+You can use the plus button to add a new word, and the refresh button to get a new word. <br /> <br />
 3 things are checked every time you upload a new word: <br />
   -If it's possible to derive from the given words letters, <br />
   -If it's used before, <br />
