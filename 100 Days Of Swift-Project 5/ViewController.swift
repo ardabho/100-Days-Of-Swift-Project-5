@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UITableViewController {
     
     var allWords = [String]()
-    var usedWords = [String]()
+    var currentQuestion: Question!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,17 +18,20 @@ class ViewController: UITableViewController {
         tableView.backgroundView = UIImageView(image: UIImage(named: "background_3.jpg"))
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(startGame))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(restartGame))
+        
         if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
             if let startwords = try? String(contentsOf: startWordsURL) {
-                allWords = startwords.components(separatedBy: "\n")
+                self.allWords = startwords.components(separatedBy: "\n")
             }
         }
         
-        if allWords.isEmpty {
-            allWords = ["silkworm"]
+        if self.allWords.isEmpty {
+            self.allWords = ["silkworm"]
         }
         
+        
+        loadQuestion()
         startGame()
     }
     
@@ -43,6 +46,38 @@ class ViewController: UITableViewController {
         
         ac.addAction(submitAction)
         present(ac, animated: true)
+    }
+    
+    @objc func restartGame() {
+        currentQuestion.word = allWords.randomElement()!
+        currentQuestion.answers.removeAll()
+        startGame()
+    }
+    //MARK: - User Defaults functions
+    
+    func save() {
+        let encoder = JSONEncoder()
+        if let savedData = try? encoder.encode(currentQuestion) {
+            let defaults = UserDefaults.standard
+            defaults.set(savedData, forKey: "question")
+        } else {
+            print("Failed to save people data")
+        }
+    }
+    
+    func loadQuestion() {
+        let defaults = UserDefaults.standard
+        
+        if let savedQuestion = defaults.object(forKey: "question") as? Data {
+            let jsonDecoder = JSONDecoder()
+            do {
+                try currentQuestion = jsonDecoder.decode(Question.self, from: savedQuestion)
+            } catch {
+                print("Failed to load question")
+            }
+        } else {
+            currentQuestion = Question(word: allWords.randomElement()!, answers: [])
+        }
     }
     
     //MARK: - Answer Validation functions:
@@ -65,7 +100,7 @@ class ViewController: UITableViewController {
     
     ///Checks if the word is entered before by the user
     func isOriginal(word: String) -> Bool {
-        return !usedWords.contains(word.lowercased())
+        return !currentQuestion.answers.contains(word.lowercased())
     }
     
     ///Checks if the word is a real word by comparing it with allWords
@@ -92,7 +127,9 @@ class ViewController: UITableViewController {
         if isPossible(word: lowerCased){
             if isOriginal(word: lowerCased){
                 if isReal(word: lowerCased){
-                    usedWords.insert(answer.lowercased(), at: 0)
+                    
+                    currentQuestion.answers.insert(answer, at: 0)
+                    save()
                     
                     let indexPath = IndexPath(row: 0, section: 0)
                     tableView.insertRows(at: [indexPath], with: .automatic)
@@ -116,23 +153,23 @@ class ViewController: UITableViewController {
         let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         present(ac, animated: true)
-
+        
     }
     
     @objc func startGame() {
-        title = allWords.randomElement()
-        usedWords.removeAll(keepingCapacity: true)
+        title = currentQuestion.word
         tableView.reloadData()
     }
     
     //MARK: - TableView Data Source Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return usedWords.count
+        return currentQuestion.answers.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "Word", for: indexPath)
-        cell.textLabel?.text = usedWords[indexPath.row]
+        cell.textLabel?.text = currentQuestion.answers[indexPath.row]
         cell.backgroundColor = UIColor.clear
         return cell
     }
